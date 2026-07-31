@@ -1,0 +1,38 @@
+---
+title: Wallet and transactions
+description: Insufficient balance, pending txs, and claim delays.
+---
+
+## Insufficient balance
+
+**Why:** Cached or true on-chain balance is below entry / withdraw amount.
+
+**Fix:** Deposit USDCx to your custodial address; wait for confirmation; refresh Wallet.
+
+**Retry:** After Hiro shows the deposit; allow a short cache delay (about a few minutes max).
+
+## Pending blockchain transaction
+
+**Why:** Stacks tx is in mempool or awaiting confirmations; UI is waiting on Hiro.
+
+**Fix:** Keep the tab open or note the tx id on a explorer. Do not start a conflicting second join/withdraw for the same intent.
+
+**Retry:** After the tx succeeds or fails definitively. Never assume a dropped tx succeeded.
+
+## Transaction confirmation delays
+
+**Why:** Network congestion or indexer lag.
+
+**Fix:** Wait; verify tx status on Hiro / explorer. Refresh balance/claims afterward.
+
+**Retry:** Soft retry of **status check** anytime; avoid rebroadcasting unless the app explicitly offers it after failure.
+
+## Claim not showing / stuck
+
+**Why:** Match settle not finished, claim intent not yet issued, or vault claim tx not submitted.
+
+**Fix:** Open Wallet → pending wins; run claim again. Confirm you are the recipient.
+
+**Retry:** After settle UI appears; space retries by a minute if the chain is slow.
+
+**Support:** Confirmed winning match, settle UI shown, claim tx confirmed, balance never moved.

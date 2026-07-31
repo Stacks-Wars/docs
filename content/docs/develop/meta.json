@@ -1,0 +1,14 @@
+{
+  "title": "Developer",
+  "pages": [
+    "getting-started",
+    "environment",
+    "architecture",
+    "interfaces",
+    "registration",
+    "local-development",
+    "testing",
+    "publishing",
+    "contributing"
+  ]
+}

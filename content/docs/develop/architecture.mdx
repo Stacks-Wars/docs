@@ -1,0 +1,49 @@
+---
+title: Game architecture
+description: How a game crate and UI module should be structured.
+---
+
+## Backend game crate
+
+A game is a Rust library depending on **`sw-plugin`** and **`sw-domain`** only (published crates). Typical layout:
+
+```text
+my-game/
+  Cargo.toml          # package name e.g. sw_my_game
+  LICENSE             # Stacks Wars Custom License
+  README.md
+  src/
+    lib.rs            # re-exports factory + game_id
+    factory.rs        # GameFactory + GameMetadata (incl. dev_id)
+    engine.rs         # GameEngine implementation
+    message.rs        # action/event types (optional module split)
+  assets/             # optional (e.g. dictionaries)
+```
+
+### Responsibilities
+
+| Layer | Owns |
+|-------|------|
+| **Factory** | Stable `game_id`, catalog `GameMetadata`, constructs engine from `EngineContext` |
+| **Engine** | Rules, timers, turn order, validating actions, calling `GameHost` to broadcast / complete |
+| **Host (platform)** | WS fanout, lobby lifecycle, match persistence, vault claim intents — **do not reimplement** |
+| **Domain** | Shared IDs and DTO shapes (`UserId`, `LobbyId`, fees, …) |
+
+### Separation of concerns
+
+- Keep **pure rules** testable without Redis/Postgres (`NopHost` for unit tests).
+- Serialize wire payloads with `camelCase` to match the web client.
+- Never talk to SQL, Hiro, or vault APIs from the game crate — only `GameHost`.
+
+## Frontend game module
+
+```text
+frontend/games/my-game/
+  index.ts       # registerGame({ gameId, Room, … })
+  room.tsx       # in-match UI
+  …
+frontend/games/boot.ts      # side-effect import
+frontend/games/playable.ts  # PLAYABLE_GAME_IDS entry
+```
+
+The UI registry is **client-only**. Catalog truth (name, fees, player limits) still comes from the backend factory metadata.

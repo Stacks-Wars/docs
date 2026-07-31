@@ -1,0 +1,38 @@
+---
+title: Local development
+description: Run stack locally, websockets, debugging, hot reload.
+---
+
+## Running the stack
+
+1. Postgres + Redis up; fill `backend/.env` and `frontend/.env.local`.
+2. `cargo run -p sw-server` from `backend/`.
+3. `bun dev` from `frontend/`.
+4. Sign in via Neon Auth against your configured project.
+
+For Redis-only via Docker: `docker compose up redis` in `backend/`.
+
+## WebSockets
+
+- URL: `NEXT_PUBLIC_WS_URL` → `ws://127.0.0.1:8080/app`
+- Multiplexed topics for session, lobbies, and rooms
+- Game actions are JSON values handled by `GameEngine::handle_action`
+
+Watch browser Network → WS and `RUST_LOG=sw_server=debug` for rejects.
+
+## Debugging games
+
+- Unit-test engines with `NopHost`.
+- Log inside `handle_action` before returning `PluginError`.
+- Confirm `get_game_state` returns what the Room expects after refresh.
+- Verify `dev_id` and `game_id` on `GET /games/{id}`.
+
+## Hot reload
+
+| Layer | Reload |
+|-------|--------|
+| Frontend game UI | Next Fast Refresh (`bun dev`) |
+| `boot.ts` / new game folder | May need full refresh after adding imports |
+| Rust game / server | `cargo run` rebuild (no hot swap for engines) |
+
+Keep game ids stable while iterating on rules so lobbies remain meaningful.

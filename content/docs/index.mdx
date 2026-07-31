@@ -1,0 +1,40 @@
+---
+title: Stacks Wars Docs
+description: Player and developer documentation for the Stacks Wars platform.
+---
+
+Stacks Wars is a competitive gaming platform on Stacks. Players fund a custodial USDCx wallet, join lobbies, play real-time matches, and claim winnings on-chain.
+
+This site covers:
+
+<Cards>
+	<Card
+		title="User Guide"
+		href="/user/account"
+		description="Accounts, lobbies, wallet, rewards, and settings."
+	/>
+	<Card
+		title="Troubleshooting"
+		href="/troubleshooting"
+		description="Fix common lobby, wallet, and connection issues."
+	/>
+	<Card
+		title="Developer Guide"
+		href="/develop/getting-started"
+		description="Build and register games with sw-plugin."
+	/>
+</Cards>
+
+## How the platform works
+
+1. **Sign in** with email + password / google OAuth.
+2. A **custodial Stacks wallet** is created for you. You deposit **USDCx** to play.
+3. Create or join a **lobby** for a registered game (free or paid).
+4. When everyone is ready, the match runs live in the room.
+5. After the match, winners **claim** payouts on-chain.
+
+## For game developers
+
+Build a Rust game with [`sw-plugin`](https://crates.io/crates/sw-plugin), add a frontend module, and set your **developer ID** from profile (**Get ID**) as `dev_id`.
+
+Start at [Getting Started](/develop/getting-started).
