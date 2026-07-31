@@ -1,0 +1,32 @@
+---
+title: Match problems
+description: Cancelled matches and incomplete settles.
+---
+
+## Match cancelled
+
+**Why:** Host left before start, not enough ready players, or the lobby expired.
+
+**Fix:** For paid lobbies, check Wallet activity for a refund. Then start or join a new lobby.
+
+**Retry:** After any refund shows (paid), or immediately (free).
+
+**Support:** Entry taken with no refund after cancellation — include tx ids.
+
+## Actions rejected / game stuck
+
+**Why:** Moved out of turn, outdated screen, or the match already ended.
+
+**Fix:** Wait a moment for the board to update; refresh the room once.
+
+**Retry:** After the board looks current. If the match ended, use the result / claim UI.
+
+## Rewards missing after a win
+
+**Why:** Claim not finished, wrong account, or settle still processing.
+
+**Fix:** Follow [Playing → Rewards](/user/playing) and [Wallet claims](/troubleshooting/wallet-transactions).
+
+**Retry:** From Wallet → pending wins after the result screen.
+
+**Support:** Include lobby id, game id, and any claim tx ids.

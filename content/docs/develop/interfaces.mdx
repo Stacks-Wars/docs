@@ -1,0 +1,80 @@
+---
+title: Required interfaces
+description: GameFactory, GameEngine, GameHost, and related types.
+---
+
+Imports come from published crates:
+
+```rust
+use sw_plugin::{
+    EngineContext, GameEngine, GameFactory, GameHostRef, GameRegistry,
+    MatchResult, PluginResult,
+};
+use sw_domain::{FeeConfig, GameCategory, GameId, GameMetadata, UserId};
+```
+
+## `GameFactory`
+
+**What:** Constructor + catalog entry for one `game_id`.  
+**Why:** Server discovers games through `GameRegistry` without hardcoding rules.  
+**When:** Process boot (`register`), HTTP `GET /games`, and lobby start (`create`).
+
+```rust
+pub trait GameFactory: Send + Sync {
+    fn game_id(&self) -> GameId;
+    fn metadata(&self) -> GameMetadata;
+    fn create(&self, ctx: EngineContext) -> PluginResult<Box<dyn GameEngine>>;
+}
+```
+
+`GameMetadata` must include `dev_id` (your platform user UUID from **Get ID**), `fee` (0–5%), player limits, and categories.
+
+## `EngineContext`
+
+Snapshot when the engine is constructed: lobby id, game id, player ids, creator, entry and pot amounts, sponsored flag, JSON `settings`.
+
+## `GameEngine`
+
+**What:** Per-lobby runtime.  
+**Why:** Isolates rules and background tasks (turns, timeouts) inside the game.  
+**When:**
+
+| Method | When |
+|--------|------|
+| `start` | Match begins — init state, spawn loops, first broadcast |
+| `handle_action` | Player sends a game action over WS |
+| `handle_player_quit` | Player leaves / disconnects forfeit path |
+| `get_game_state` | Snapshot for join-in-progress / resync (`user_id` may be `None`) |
+| `is_finished` | Platform checks completion |
+| `shutdown` | Room teardown |
+
+## `GameHost` / `GameHostRef`
+
+**What:** Platform capabilities injected into the engine.  
+**Why:** Games stay portable — same crate works under `sw-server` or `NopHost` in tests.  
+**When:** Anytime the engine needs IO:
+
+- `broadcast` / `send_to` / `send_except` — realtime payloads
+- `complete_match(MatchResult)` — winners, rankings, stats → settle path
+- `finish_lobby` — close without a normal result when appropriate
+- `get_player_states` / `save_player_result` — roster + wars-points helpers
+- room wire helpers (`broadcast_room_game`, …)
+
+## Markers and results
+
+- `GameAction` / `GameEvent` — typed serde markers for your messages.
+- `MatchResult` — `winners`, `rankings`, `stats` for settle.
+- `PluginResult` / `PluginError` — fallible plugin boundary.
+
+## Frontend contract
+
+```ts
+registerGame({
+  gameId: "my-game",          // must match backend GameId
+  Room: MyRoom,               // required
+  LobbyPanel, Page,           // optional
+  createActions, onMatchFinished,
+})
+```
+
+See `frontend/games/types.ts` for `GameRoomProps` and friends.

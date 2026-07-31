@@ -1,0 +1,33 @@
+---
+title: Testing
+description: Test game logic, lobbies, multiplayer, and integration.
+---
+
+## Game logic
+
+- Prefer pure functions for rules; keep `GameEngine` thin.
+- Use `sw_plugin::NopHost` to assert broadcasts / `complete_match` calls.
+- Cover illegal moves, turn order, disconnect/forfeit, and finish conditions.
+
+```bash
+cd my-game && cargo test
+```
+
+## Lobby flow
+
+Manual or scripted against local API:
+
+1. Auth → create free lobby → second user joins → ready → start.
+2. Paid path: fund custodial wallets on test/mainnet config you use locally, then vault join + join API.
+
+## Multiplayer
+
+- Two browsers (or profiles) on the same `NEXT_PUBLIC_APP_URL`.
+- Confirm both receive state after each action and after reconnect.
+- Kill one tab mid-match and verify quit handling.
+
+## Integration
+
+- `cargo check -p sw-server` with your crate registered.
+- Frontend: Room mounts for your `gameId`, playable badge shows.
+- Smoke: create → play → finish → (paid) claim path once on a funded environment.

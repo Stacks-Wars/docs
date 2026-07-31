@@ -1,0 +1,37 @@
+---
+title: Registering with Stacks Wars
+description: Contribute a game via PR — registration, validation, expectations.
+---
+
+## Workflow
+
+1. **Build** the Rust game against published `sw-plugin` / `sw-domain`.
+2. **Copy your developer ID** from your profile (**Get ID**) into `GameMetadata.dev_id`.
+3. **Publish** the game crate to crates.io (or propose a first-party path crate).
+4. **Open a PR** against `backend` that:
+   - Adds the crates.io dependency on `sw-server`
+   - Registers the factory in `games.rs`
+5. **Open a PR** against `frontend` that:
+   - Adds `games/<id>/` + `boot.ts` import + `PLAYABLE_GAME_IDS`
+6. **Validate** locally: catalog entry, create lobby, two-player smoke, finish (+ claim if paid).
+7. Pass review / CI.
+
+## Contribution expectations
+
+- Follow the [Stacks Wars Custom License](https://github.com/Stacks-Wars/docs) — build extensions; do not rebrand or sell the platform code.
+- Keep PRs focused (one game integration).
+- No marketing fluff in metadata; accurate min/max players and fees.
+- Do not commit secrets (mnemonics, API keys, service accounts).
+- Match existing code style; prefer small diffs.
+- Document any new env vars or lobby settings your game needs.
+
+## Validation checklist
+
+- [ ] `GET /games` shows metadata with correct `dev_id`
+- [ ] Free lobby playthrough
+- [ ] Paid lobby join/leave/claim smoke (if applicable)
+- [ ] Reconnect mid-game
+- [ ] Frontend Room + playable badge
+- [ ] License + crates.io (or agreed first-party hosting)
+
+Questions: [Telegram](https://t.me/stackswars) or GitHub issues on the relevant repo.

@@ -1,0 +1,14 @@
+{
+  "title": "User Guide",
+  "pages": [
+    "account",
+    "navigating",
+    "games",
+    "lobbies",
+    "playing",
+    "wallet",
+    "leaderboards",
+    "profile-settings",
+    "notifications"
+  ]
+}

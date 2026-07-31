@@ -1,0 +1,31 @@
+---
+title: Publishing
+description: Version, publish game crates, and stay compatible.
+---
+
+## Prepare a release
+
+1. License: Stacks Wars Custom License (`license-file = "LICENSE"`).
+2. `Cargo.toml`: description, repository, readme, keywords; `include` source + LICENSE (+ assets).
+3. Depend on compatible `sw-plugin` / `sw-domain` versions (semver).
+4. Set production `dev_id`.
+5. `cargo publish --dry-run` from the game crate.
+
+## Versioning
+
+- **Breaking** plugin/domain changes → bump game major when you need incompatible APIs.
+- Platform published `sw-domain` / `sw-plugin` **1.0.x**; stay on the same major for drop-in server upgrades.
+- Do not republish the same version on crates.io.
+
+## Publish
+
+```bash
+cd my-game
+cargo publish
+```
+
+## Compatibility
+
+- Keep `sw-plugin` / `sw-domain` versions aligned with the server.
+- After publishing, add the crate to `sw-server` and run `cargo update`.
+- Frontend `gameId` must match the published factory id.

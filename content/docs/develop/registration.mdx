@@ -1,0 +1,52 @@
+---
+title: Game registration
+description: Metadata, server registration, and frontend modules.
+---
+
+## 1. Metadata (`GameMetadata`)
+
+Set in your `GameFactory::metadata()`:
+
+- `id` — kebab slug, stable forever (`my-game`)
+- `name`, `description`
+- `min_players` / `max_players`
+- `categories` — `GameCategory` variants
+- `fee` — `FeeConfig::new(0..=5)?`
+- `dev_id` — your platform user id from profile **Get ID**
+
+Invalid or unknown `dev_id` can zero developer fees at claim time — use the real id from production.
+
+## 2. Server registration
+
+1. Publish (or path-depend) your crate.
+2. Add the dependency on `sw-server`.
+3. Register the factory in `backend/crates/sw-server/src/games.rs`:
+
+```rust
+registry
+    .register(MyGameFactory::arc())
+    .context("register my-game")?;
+```
+
+4. Restart `sw-server`. Confirm `GET /games` lists your game.
+
+## 3. Frontend registration
+
+1. Add `frontend/games/my-game/` with `registerGame({ gameId: "my-game", Room })`.
+2. Import it from `frontend/games/boot.ts`.
+3. Add the id to `PLAYABLE_GAME_IDS` in `frontend/games/playable.ts`.
+4. Optional: art under `public/games/my-game.png`.
+
+`gameId` strings must match the Rust `GameId` exactly.
+
+## 4. Exposing UI
+
+| Export | Role |
+|--------|------|
+| `Room` | In-match UI when lobby is in progress |
+| `LobbyPanel` | Extra waiting-room UI |
+| `Page` | Custom `/games/[id]` page |
+| `createActions` | Typed helpers over the game channel |
+| `onMatchFinished` | Client celebration / overlays |
+
+No prior platform knowledge required beyond implementing these seams and registering both sides.

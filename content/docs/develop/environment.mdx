@@ -1,0 +1,47 @@
+---
+title: Environment variables
+description: Required and optional env vars for backend and frontend.
+---
+
+## Backend (`backend/.env`)
+
+| Variable | Required | Purpose | Example |
+|----------|----------|---------|---------|
+| `DATABASE_URL` | yes | Postgres | `postgres://postgres:postgres@localhost:5432/stacks_wars` |
+| `REDIS_URL` | yes | Redis | `redis://127.0.0.1:6379` |
+| `HIRO_API_KEY` | yes | Hiro API | from Hiro |
+| `NEON_AUTH_BASE_URL` | yes | Auth JWKS base | Neon Auth URL |
+| `SW_VAULT_CONTRACT` | yes | Vault principal | `SP….sw-vault-v1` |
+| `INTERNAL_API_SECRET` | yes | Shared secret for server-to-server calls | long random |
+| `HOST` | no | Bind host | `0.0.0.0` |
+| `PORT` | no | Bind port | `8080` |
+| `FRONTEND_URL` | no | Public web origin | `https://stackswars.com` |
+| `MIGRATIONS_DIR` | no | SQL migrations path | `./migrations` |
+| `TELEGRAM_BOT_TOKEN` | no* | Telegram companion | |
+| `TELEGRAM_CHAT_ID` | no* | Telegram companion | |
+| `ADMIN` | no | Comma-separated admin emails | |
+| `HIRO_API_URL` | no | Hiro base | `https://api.hiro.so` |
+| `STACKS_NETWORK` | no | Network name | `mainnet` |
+| `RUST_LOG` | no | Tracing filter | `info,sw_server=debug` |
+
+\*Telegram enables only when **both** token and chat id are set.
+
+## Frontend (`frontend/.env.local`)
+
+| Variable | Required | Purpose | Example |
+|----------|----------|---------|---------|
+| `NEON_AUTH_BASE_URL` | yes | Neon Auth | same family as backend |
+| `NEON_AUTH_COOKIE_SECRET` | yes | Cookie signing (≥32 chars) | `openssl rand -base64 32` |
+| `NEXT_PUBLIC_APP_URL` | yes | Canonical origin | `http://localhost:3000` |
+| `NEXT_PUBLIC_API_URL` | yes | Rust API | `http://127.0.0.1:8080` |
+| `NEXT_PUBLIC_WS_URL` | yes | WS endpoint | `ws://127.0.0.1:8080/app` |
+| `HIRO_API_KEY` | yes | Server-side Hiro | |
+| `SW_VAULT_CONTRACT` | yes | Vault contract | same as backend |
+| `STACKS_WARS_KEY` | yes | Oracle/sponsor mnemonic | 24 words |
+| `NEXT_PUBLIC_NETWORK` | yes | Stacks network | `mainnet` |
+| `GOOGLE_CLOUD_PROJECT` | yes | KMS project | |
+| `KMS_LOCATION` | yes | KMS location | `global` |
+| `KMS_KEY_RING` | yes | Key ring | `stacks-wars` |
+| `KMS_CRYPTO_KEY` | yes | Crypto key | `custodial-wallet-keys` |
+| `GOOGLE_SERVICE_ACCOUNT_KEY` | yes | SA JSON (compact) | `jq -c . key.json` |
+| `INTERNAL_API_SECRET` | yes | Must match backend (S2S / cron) | same value as backend |
