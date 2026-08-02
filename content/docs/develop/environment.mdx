@@ -28,18 +28,19 @@ description: Required and optional env vars for backend and frontend.
 
 ## Frontend (`frontend/.env.local`)
 
-| Variable                  | Required    | Purpose                                          | Example                   |
-| ------------------------- | ----------- | ------------------------------------------------ | ------------------------- |
-| `NEON_AUTH_BASE_URL`      | yes         | Neon Auth                                        | same family as backend    |
-| `NEON_AUTH_COOKIE_SECRET` | yes         | Cookie signing (≥32 chars)                       | `openssl rand -base64 32` |
-| `NEXT_PUBLIC_APP_URL`     | yes         | Canonical origin                                 | `http://localhost:3000`   |
-| `NEXT_PUBLIC_API_URL`     | yes         | Rust API                                         | `http://127.0.0.1:8080`   |
-| `NEXT_PUBLIC_WS_URL`      | yes         | WS endpoint                                      | `ws://127.0.0.1:8080/app` |
-| `HIRO_API_KEY`            | yes         | Server-side Hiro                                 |                           |
-| `SW_VAULT_CONTRACT`       | yes         | Vault contract                                   | same as backend           |
-| `STACKS_WARS_KEY`         | yes         | Oracle/sponsor mnemonic                          | 24 words                  |
-| `NEXT_PUBLIC_NETWORK`     | yes         | Stacks network                                   | `mainnet`                 |
-| `CUSTODIAL_DEV_SECRET`    | yes (local) | Encrypts custodial mnemonics locally (≥16 chars) | `openssl rand -base64 32` |
-| `INTERNAL_API_SECRET`     | yes         | Must match backend (S2S / cron)                  | same value as backend     |
+| Variable                  | Required    | Purpose                                            | Example                   |
+| ------------------------- | ----------- | -------------------------------------------------- | ------------------------- |
+| `NEON_AUTH_BASE_URL`      | yes         | Neon Auth                                          | same family as backend    |
+| `NEON_AUTH_COOKIE_SECRET` | yes         | Cookie signing (≥32 chars)                         | `openssl rand -base64 32` |
+| `NEXT_PUBLIC_APP_URL`     | yes         | Canonical origin                                   | `http://localhost:3000`   |
+| `NEXT_PUBLIC_API_URL`     | yes         | Rust API                                           | `http://127.0.0.1:8080`   |
+| `NEXT_PUBLIC_WS_URL`      | yes         | WS endpoint                                        | `ws://127.0.0.1:8080/app` |
+| `HIRO_API_KEY`            | yes         | Server-side Hiro                                   |                           |
+| `SW_VAULT_CONTRACT`       | yes         | Vault contract                                     | same as backend           |
+| `STACKS_WARS_KEY`         | yes         | Oracle/sponsor mnemonic                            | 24 words                  |
+| `NEXT_PUBLIC_NETWORK`     | yes         | Stacks network                                     | `mainnet`                 |
+| `CUSTODIAL_DEV_SECRET`    | yes (local) | Encrypts custodial mnemonics locally (≥16 chars)   | `openssl rand -base64 32` |
+| `INTERNAL_API_SECRET`     | yes         | Must match backend (S2S / cron)                    | same value as backend     |
+| `DISABLE_VERIFICATION`    | yes (local) | Skip signup email OTP UI + disposable-email checks | `true` / unset / `false`  |
 
 Production encrypts custodial mnemonics with **Google Cloud KMS** instead of `CUSTODIAL_DEV_SECRET`

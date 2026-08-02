@@ -12,6 +12,14 @@ description: Run stack locally, websockets, debugging, hot reload.
 
 For Redis-only via Docker: `docker compose up redis` in `backend/`.
 
+## Auth signup locally
+
+Neon Console should have **Verify at Sign-up** + **Verification code** when you want the OTP UI.
+
+- Default: disposable emails are rejected (fakeout) before Neon Auth; after signup the UI asks for the email code.
+
+See [Environment variables](/develop/environment).
+
 ## WebSockets
 
 - URL: `NEXT_PUBLIC_WS_URL` → `ws://127.0.0.1:8080/app`
@@ -29,10 +37,10 @@ Watch browser Network → WS and `RUST_LOG=sw_server=debug` for rejects.
 
 ## Hot reload
 
-| Layer | Reload |
-|-------|--------|
-| Frontend game UI | Next Fast Refresh (`bun dev`) |
-| `boot.ts` / new game folder | May need full refresh after adding imports |
-| Rust game / server | `cargo run` rebuild (no hot swap for engines) |
+| Layer                       | Reload                                        |
+| --------------------------- | --------------------------------------------- |
+| Frontend game UI            | Next Fast Refresh (`bun dev`)                 |
+| `boot.ts` / new game folder | May need full refresh after adding imports    |
+| Rust game / server          | `cargo run` rebuild (no hot swap for engines) |
 
 Keep game ids stable while iterating on rules so lobbies remain meaningful.
