@@ -43,4 +43,4 @@ description: Required and optional env vars for backend and frontend.
 | `INTERNAL_API_SECRET`     | yes         | Must match backend (S2S / cron)                    | same value as backend     |
 | `DISABLE_VERIFICATION`    | yes (local) | Skip signup email OTP UI + disposable-email checks | `true` / unset / `false`  |
 
-Production encrypts custodial mnemonics with **Google Cloud KMS** instead of `CUSTODIAL_DEV_SECRET`
+Production encrypts custodial mnemonics with **Google Cloud KMS** instead of `CUSTODIAL_DEV_SECRET`. Key version 1 has no AAD; version 2+ binds `wallet:{userId}:stacks:{network}`. Version-1 rows are re-wrapped on the next successful sign.
