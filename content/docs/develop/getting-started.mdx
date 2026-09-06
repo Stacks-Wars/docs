@@ -11,7 +11,7 @@ description: Clone the workspace, layout, install, and run locally.
 | `frontend/` | Bun + Next.js arena UI |
 | `checkers/`, `lexi-wars/`, `ludo/`, `ludo-rush/` | Game crates |
 | `docs/` | This documentation site |
-| `backend/sw-vault/` | Clarity vault (`sw-vault-v1`) |
+| `backend/sw-vault/` | Clarity + Solana vaults |
 
 ## Clone
 
@@ -22,37 +22,18 @@ git clone https://github.com/Stacks-Wars/checkers.git
 # …other games / docs as needed
 ```
 
-## Install
-
-**Backend**
-
-```bash
-cd backend
-cp .env.example .env   # fill required values
-# Postgres + Redis required
-cargo build -p sw-server
-```
-
-**Frontend**
-
-```bash
-cd frontend
-cp env.example .env.local
-bun install
-```
-
-**Game crate** (example)
-
-```bash
-cd checkers
-cargo build
-```
-
 ## Run locally
 
-1. Start Postgres and Redis.
-2. `cd backend && cargo run -p sw-server` (runs migrations).
-3. `cd frontend && bun dev` → http://localhost:3000
-4. Optional: `docker compose` in `backend/` for Redis + server image.
+Local/dev is the default. No `.env` required.
 
-See [Environment variables](/develop/environment) and [Local development](/develop/local-development).
+```bash
+cd backend && docker compose up -d postgres redis
+cargo run -p sw-server
+cd frontend && bun install && bun run dev
+```
+
+New wallets get $50 test tokens on Stacks testnet and the local Solana mint.
+
+Production is `sw-server --main` or `NETWORK=main`. Wars keys stay on Railway / Vercel.
+
+Optional: `HIRO_API_KEY`, `HELIUS_API_KEY`, Google OAuth, Resend. See [Environment variables](/develop/environment).

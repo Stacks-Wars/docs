@@ -5,24 +5,25 @@ description: Run stack locally, websockets, debugging, hot reload.
 
 ## Running the stack
 
-1. Postgres + Redis up; fill `backend/.env` and `frontend/.env.local`.
-2. `cargo run -p sw-server` from `backend/`.
-3. `bun dev` from `frontend/`.
-4. Sign in via Neon Auth against your configured project.
+```bash
+cd backend && docker compose up -d postgres redis
+cargo run -p sw-server
+cd frontend && bun run dev
+```
 
-For Redis-only via Docker: `docker compose up redis` in `backend/`.
+Local defaults: Compose Postgres/Redis, Clarinet wallet_1, the committed Solana dev key, and `INTERNAL_API_SECRET=sw-dev-internal`. Sign up skips email OTP unless you set `DISABLE_VERIFICATION=false`.
+
+Optional full image: `docker compose --profile server up --build` in `backend/` (still local — Railway’s image `CMD` is `--main`).
 
 ## Auth signup locally
 
-Neon Console should have **Verify at Sign-up** + **Verification code** when you want the OTP UI.
-
-- Default: disposable emails are rejected (fakeout) before Neon Auth; after signup the UI asks for the email code.
+Local defaults skip verification so you can enter immediately. Set `DISABLE_VERIFICATION=false` and `RESEND_API_KEY` if you want the OTP path. Google only appears when both Google client env vars are set.
 
 See [Environment variables](/develop/environment).
 
 ## WebSockets
 
-- URL: `NEXT_PUBLIC_WS_URL` → `ws://127.0.0.1:8080/app`
+- URL: `ws://127.0.0.1:8080/app` locally
 - Multiplexed topics for session, lobbies, and rooms
 - Game actions are JSON values handled by `GameEngine::handle_action`
 
